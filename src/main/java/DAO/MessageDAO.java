@@ -13,9 +13,23 @@ import java.util.ArrayList;
 
 public class MessageDAO {
 
-    public Message insertMessage(String messageBody, Account user)
+    public Message insertMessage(Account user, String messageBody)
     {
-        return null;
+        Connection connection = ConnectionUtil.getConnection();
+        try
+        {
+            String sql = "INSERT INTO Message (posted_by, message_text, time_posted_epoch)" +
+                            " VALUES (?, ?, ?)";
+            PreparedStatement prep = connection.prepareStatement(sql);
+
+            prep.setInt(1, user.getAccount_id());
+            prep.setString(2, messageBody);
+            //prep.setLong(3, );   //Add date and time
+        }
+        catch (SQLException e)
+        {
+
+        }
     }
 
     public List<Message> getAllMessages()
@@ -27,13 +41,21 @@ public class MessageDAO {
             String sql = "SELECT * FROM Message";
             PreparedStatement prep = connection.prepareStatement(sql);
             ResultSet rs = prep.executeQuery();
+            while (rs.next())
+            {
+                Message message = new Message(rs.getInt("message_id"),
+                                        rs.getInt("posted_by"),
+                                        rs.getString("message_text"),
+                                        rs.getLong("time_posted_epoch"));
+                messages.add(message);
+            }
         }
-        catch(SQLException e)
+        catch (SQLException e)
         {
-
+            System.out.println(e.getMessage());
         }
 
-        return null;
+        return messages;
     }
 
     public Message getMessageById(int id)
