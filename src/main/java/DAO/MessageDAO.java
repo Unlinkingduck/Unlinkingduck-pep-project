@@ -13,7 +13,7 @@ import java.util.ArrayList;
 
 public class MessageDAO {
 
-    public Message insertMessage(Account user, String messageBody)
+    public Message insertMessage(Message message)
     {
         Connection connection = ConnectionUtil.getConnection();
         try
@@ -22,14 +22,19 @@ public class MessageDAO {
                             " VALUES (?, ?, ?)";
             PreparedStatement prep = connection.prepareStatement(sql);
 
-            prep.setInt(1, user.getAccount_id());
-            prep.setString(2, messageBody);
-            //prep.setLong(3, );   //Add date and time
+            prep.setInt(1, message.getPosted_by());
+            prep.setString(2, message.getMessage_text());
+            prep.setLong(3, message.getTime_posted_epoch());
+
+            prep.executeUpdate();
+            
+            return message;
         }
         catch (SQLException e)
         {
-
+            System.out.println(e.getMessage());
         }
+        return null;
     }
 
     public List<Message> getAllMessages()
