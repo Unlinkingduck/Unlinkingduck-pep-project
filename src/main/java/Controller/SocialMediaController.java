@@ -5,8 +5,14 @@ import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import io.javalin.Javalin;
 import io.javalin.http.Context;
+
+import static org.mockito.ArgumentMatchers.nullable;
+
 import java.util.List;
 
 /**
@@ -18,6 +24,12 @@ public class SocialMediaController {
 
     MessageService messageService;
     AccountService accountService;
+
+    public SocialMediaController()
+    {
+        this.messageService = new MessageService();
+        this.accountService = new AccountService();
+    }
 
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
@@ -55,9 +67,20 @@ public class SocialMediaController {
     }
 
 
-    private void postMessageHandler(Context ctx)
+    private void postMessageHandler(Context ctx) throws JsonProcessingException
     {
-
+        ObjectMapper mapper = new ObjectMapper();
+        Message message = mapper.readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.insertMessage(message);
+        if (addedMessage != null)
+        {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(addedMessage));
+        }
+        else
+        {
+            ctx.status(400);
+        }
     }
 
 
