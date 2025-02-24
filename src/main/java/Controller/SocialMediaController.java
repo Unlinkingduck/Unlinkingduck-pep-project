@@ -55,15 +55,37 @@ public class SocialMediaController {
      * Handler to post a new Account
      * @param context The Javalin Context object manages information about both the HTTP request and response.
      */
-    private void postAccountHandler(Context ctx) 
+    private void postAccountHandler(Context ctx) throws JsonProcessingException
     {
-        ctx.json("sample text");
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account addedAccount = accountService.insertAccount(account);
+        if (addedAccount != null)
+        {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(addedAccount));
+        }
+        else
+        {
+            ctx.status(400);
+        }
     }
 
 
-    private void loginAccountHandler(Context ctx)
+    private void loginAccountHandler(Context ctx) throws JsonProcessingException
     {
-
+        ObjectMapper mapper = new ObjectMapper();
+        Account account = mapper.readValue(ctx.body(), Account.class);
+        Account retrieved = accountService.loginAccount(account);
+        if (retrieved != null)
+        {
+            ctx.status(200);
+            ctx.json(mapper.writeValueAsString(retrieved));
+        }
+        else
+        {
+            ctx.status(401);
+        }
     }
 
 
@@ -86,7 +108,9 @@ public class SocialMediaController {
 
     private void getMessageHandler(Context ctx)
     {
-
+        List<Message> messages = messageService.getAllMessages();
+        ctx.status(200);
+        ctx.json(messages);
     }
 
 

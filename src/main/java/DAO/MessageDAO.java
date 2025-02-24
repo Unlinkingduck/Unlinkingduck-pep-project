@@ -6,7 +6,7 @@ import Util.ConnectionUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.*;
+import java.sql.Statement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.List;
@@ -31,14 +31,15 @@ public class MessageDAO {
             ResultSet rs = prep.getGeneratedKeys();
             if (rs.next())
             {
-                int newId = rs.getInt(1);
-                return new Message(newId, message.getPosted_by(), message.getMessage_text(), message.getTime_posted_epoch());
+                return new Message(rs.getInt(1), message.getPosted_by(), message.getMessage_text(), 
+                    message.getTime_posted_epoch());
             }
         }
         catch (SQLException e)
         {
             System.out.println(e.getMessage());
         }
+        
         return null;
     }
 
