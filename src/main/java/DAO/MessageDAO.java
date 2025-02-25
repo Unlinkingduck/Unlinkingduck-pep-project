@@ -39,7 +39,7 @@ public class MessageDAO {
         {
             System.out.println(e.getMessage());
         }
-        
+
         return null;
     }
 
@@ -51,6 +51,7 @@ public class MessageDAO {
         {
             String sql = "SELECT * FROM Message";
             PreparedStatement prep = connection.prepareStatement(sql);
+
             ResultSet rs = prep.executeQuery();
             while (rs.next())
             {
@@ -71,6 +72,25 @@ public class MessageDAO {
 
     public Message getMessageById(int id)
     {
+        Connection connection = ConnectionUtil.getConnection();
+        try
+        {
+            String sql = "SELECT * FROM Message WHERE message_id = ?";
+            PreparedStatement prep = connection.prepareStatement(sql);
+            
+            prep.setInt(1, id);
+
+            ResultSet rs = prep.executeQuery();
+            if (rs.next())
+            {
+                return new Message(rs.getInt(1), rs.getInt(2), rs.getString(3), rs.getLong(4));
+            }
+        }
+        catch (SQLException e)
+        {
+            System.out.println(e.getMessage());
+        }
+
         return null;
     }
 

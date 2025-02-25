@@ -63,7 +63,7 @@ public class SocialMediaController {
         if (addedAccount != null)
         {
             ctx.status(200);
-            ctx.json(mapper.writeValueAsString(addedAccount));
+            ctx.json(addedAccount);
         }
         else
         {
@@ -80,7 +80,7 @@ public class SocialMediaController {
         if (retrieved != null)
         {
             ctx.status(200);
-            ctx.json(mapper.writeValueAsString(retrieved));
+            ctx.json(retrieved);
         }
         else
         {
@@ -97,7 +97,7 @@ public class SocialMediaController {
         if (addedMessage != null)
         {
             ctx.status(200);
-            ctx.json(mapper.writeValueAsString(addedMessage));
+            ctx.json(addedMessage);
         }
         else
         {
@@ -116,7 +116,14 @@ public class SocialMediaController {
 
     private void getMessageByIdHandler(Context ctx)
     {
+        String id = ctx.pathParam("message_id");
+        Message message = messageService.getMessageById(Integer.parseInt(id));
 
+        ctx.status(200);
+        if (message != null)
+        {
+            ctx.json(message);
+        }
     }
 
 

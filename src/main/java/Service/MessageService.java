@@ -24,7 +24,7 @@ public class MessageService {
 
     public Message insertMessage(Message message)
     {
-        //check stuff to make sure its legal
+        //check to make sure its legal
         String body = message.getMessage_text();
         if (body.length() > 0 && body.length() <= 255 && accountDAO.validateAccountById(message.posted_by))
         {
@@ -37,6 +37,11 @@ public class MessageService {
     public List<Message> getAllMessages()
     {
         return messageDAO.getAllMessages();
+    }
+
+    public Message getMessageById(int id)
+    {
+        return messageDAO.getMessageById(id);
     }
     
 }
