@@ -10,11 +10,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
-import java.util.ArrayList;
 
+/**
+ * Class handling database operations involving the Account table
+ */
 public class AccountDAO {
 
+    /**
+     * Inserts new Account into table
+     * @param account The account to be inserted
+     * @return The inserted account or null if unsuccessful
+     */
     public Account insertAccount(Account account)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -41,6 +47,11 @@ public class AccountDAO {
         return null;
     }
 
+    /**
+     * Checks for existence of provided Account object, therefore logging in
+     * @param account Account containing a username and password
+     * @return The existing account if successful or null if unsuccessful
+     */
     public Account loginAccount(Account account) 
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -67,6 +78,11 @@ public class AccountDAO {
         return null;
     }
 
+    /**
+     * Helper method used to validate existence of specific account via account_id
+     * @param id The id of the desired account
+     * @return True if there is an account with specified id, false if there is not
+     */
     public boolean validateAccountById(int id)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -93,6 +109,11 @@ public class AccountDAO {
         return false;
     }
 
+    /**
+     * Helper method used to validate the existence of specific account via username
+     * @param username The username of the desired account
+     * @return True if an account exists with the specified username, false if no such account is found
+     */
     public boolean validateAccountByUsername(String username)
     {
         Connection connection = ConnectionUtil.getConnection();

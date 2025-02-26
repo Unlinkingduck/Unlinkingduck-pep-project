@@ -3,22 +3,25 @@ package Service;
 import DAO.AccountDAO;
 import Model.Account;
 
-import java.util.List;
-import java.util.ArrayList;
-
+/***
+ * The middle-manager for connecting controller to DAOs, handles Account operations
+ */
 public class AccountService {
     public AccountDAO accountDAO;
 
+    /**
+     * Default constructor
+     */
     public AccountService()
     {
         accountDAO = new AccountDAO();
     }
 
-    public AccountService(AccountDAO accountDAO)
-    {
-        this.accountDAO = accountDAO;
-    }
-
+    /**
+     * Handler for inserting new account into database
+     * @param account The account to be input, lacks account_id
+     * @return The account input, includes account_id, null if unsuccessful
+     */
     public Account insertAccount(Account account)
     {
         if (account.getUsername().length() > 0 && account.getPassword().length() >= 4 &&
@@ -30,6 +33,11 @@ public class AccountService {
         return null;
     }
 
+    /**
+     * Handler for loging into existing account in database
+     * @param account The account in question, lacks account_id
+     * @return The account including account_id, null if unsuccessful
+     */
     public Account loginAccount(Account account)
     {
         return accountDAO.loginAccount(account);

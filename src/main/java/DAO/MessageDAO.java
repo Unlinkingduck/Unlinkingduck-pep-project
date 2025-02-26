@@ -12,8 +12,16 @@ import java.sql.SQLException;
 import java.util.List;
 import java.util.ArrayList;
 
+/**
+ * Class handling database operations involving the Message table
+ */
 public class MessageDAO {
 
+    /**
+     * Inserts provided Message object into database
+     * @param message The message to be input, lacks message_id
+     * @return The message including message_id, null if unsuccessful
+     */
     public Message insertMessage(Message message)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -43,6 +51,10 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * Retrieves all existing messages from Message table
+     * @return A list containing all messages, empty if there are none
+     */
     public List<Message> getAllMessages()
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -70,6 +82,11 @@ public class MessageDAO {
         return messages;
     }
 
+    /**
+     * Retrieves specific message by provided id
+     * @param id The message_id of the message in question
+     * @return The desired message, or null if unsuccessful
+     */
     public Message getMessageById(int id)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -94,6 +111,11 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * Deletes desired message from Message table
+     * @param id The id of the message to be deleted
+     * @return The deleted message, or null if unsuccessful
+     */
     public Message deleteMessage(int id)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -114,6 +136,12 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * Updates desired message with new value for message_text
+     * @param message The message to be updated
+     * @param body The new message_text
+     * @return The newly updated message object, or null if unsuccessful
+     */
     public Message updateMessage(Message message, String body)
     {
         Connection connection = ConnectionUtil.getConnection();
@@ -140,6 +168,11 @@ public class MessageDAO {
         return null;
     }
 
+    /**
+     * Retrieves all messages with the specified posted_by foreign key
+     * @param userId The posted_by foreign key
+     * @return List containing all messages retrieved, empty if none exist
+     */
     public List<Message> getAllMessagesByUser(int userId)
     {
         Connection connection = ConnectionUtil.getConnection();
